@@ -1,0 +1,12 @@
+team-leave-planner/
+│
+├── package.json
+├── index.html
+├── vite.config.js
+│
+├── public/
+│   └── icon.svg
+│
+└── src/
+    ├── main.jsx
+    └── style.css
