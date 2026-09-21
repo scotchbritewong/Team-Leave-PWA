@@ -1,0 +1,842 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button,
+select,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ==========================================================
+   MAIN APPLICATION
+   ========================================================== */
+
+.app-shell {
+  width: 100%;
+  max-width: 430px;
+
+  margin: 0 auto;
+
+  padding:
+    16px
+    16px
+    100px;
+}
+
+/* ==========================================================
+   HEADER
+   ========================================================== */
+
+.main-header {
+  padding: 24px;
+
+  margin-bottom: 22px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      145deg,
+      #020617,
+      #1e293b
+    );
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 15px 35px
+    rgba(15, 23, 42, 0.15);
+}
+
+.main-header small {
+  color: #93c5fd;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.18em;
+}
+
+.main-header h1 {
+  margin: 4px 0;
+
+  font-size: 30px;
+}
+
+.main-header p {
+  margin: 8px 0 0;
+
+  color: #cbd5e1;
+
+  font-size: 14px;
+}
+
+/* ==========================================================
+   GENERAL
+   ========================================================== */
+
+h2,
+h3 {
+  margin-top: 0;
+}
+
+.eyebrow {
+  color: #94a3b8;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.05em;
+}
+
+.page-heading,
+.calendar-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 14px;
+}
+
+.page-heading h2,
+.page-heading h3,
+.calendar-heading h2 {
+  margin: 0;
+}
+
+.card,
+.calendar-card {
+  margin: 14px 0;
+
+  padding: 18px;
+
+  background: white;
+
+  border-radius: 24px;
+}
+
+.muted {
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+/* ==========================================================
+   BUTTONS
+   ========================================================== */
+
+.btn {
+  border: 0;
+
+  padding: 10px 13px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  color: white;
+
+  background: #2563eb;
+
+  border-radius: 12px;
+
+  font-weight: 700;
+}
+
+.btn.secondary {
+  color: #0f172a;
+
+  background: white;
+
+  border: 1px solid #e2e8f0;
+}
+
+.btn.danger {
+  background: #e11d48;
+}
+
+/* ==========================================================
+   GROUP CARDS
+   ========================================================== */
+
+.group-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.group-card {
+  padding: 15px;
+
+  border-radius: 18px;
+
+  border: 1px solid;
+}
+
+.group-card.group-1 {
+  background: #eff6ff;
+
+  border-color: #bfdbfe;
+}
+
+.group-card.group-2 {
+  background: #faf5ff;
+
+  border-color: #e9d5ff;
+}
+
+.group-title {
+  font-size: 11px;
+
+  font-weight: 800;
+
+  color: #0f172a;
+}
+
+.group-card h3 {
+  margin: 5px 0 2px;
+
+  color: #0f172a;
+
+  font-size: 19px;
+}
+
+.group-card h3.full {
+  color: #be123c;
+}
+
+.capacity {
+  color: #64748b;
+}
+
+/* ==========================================================
+   GROUP MEMBER NAMES
+   ========================================================== */
+
+.member-list {
+  margin-top: 12px;
+}
+
+.member {
+  margin-top: 6px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: #0f172a;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.member-dot {
+  width: 8px;
+  height: 8px;
+
+  flex: 0 0 8px;
+
+  border-radius: 50%;
+}
+
+.member-dot.group-1 {
+  background: #3b82f6;
+}
+
+.member-dot.group-2 {
+  background: #a855f7;
+}
+
+/* ==========================================================
+   LEAVE ROW
+   ========================================================== */
+
+.section-title {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.leave-row {
+  width: 100%;
+
+  border: 0;
+
+  border-bottom:
+    1px solid #f1f5f9;
+
+  padding: 11px 4px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  background: transparent;
+
+  color: #0f172a;
+
+  text-align: left;
+}
+
+.leave-row:hover {
+  background: #fff1f2;
+}
+
+.leave-row-details {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.leave-row-details strong,
+.leave-row-details small {
+  display: block;
+}
+
+.leave-row-details small {
+  color: #64748b;
+}
+
+.remove-hint {
+  margin-top: 2px;
+
+  color: #94a3b8 !important;
+}
+
+.remove-icon {
+  flex: 0 0 auto;
+
+  color: #e11d48;
+}
+
+.leave-dates {
+  color: #475569;
+
+  font-size: 11px;
+
+  text-align: right;
+}
+
+/* ==========================================================
+   AVATARS
+   ========================================================== */
+
+.avatar {
+  width: 36px;
+  height: 36px;
+
+  flex: 0 0 36px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius: 11px;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+.avatar.group-1 {
+  color: #1d4ed8;
+
+  background: #dbeafe;
+}
+
+.avatar.group-2 {
+  color: #7e22ce;
+
+  background: #f3e8ff;
+}
+
+.avatar.group-0 {
+  color: #b45309;
+
+  background: #fef3c7;
+}
+
+/* ==========================================================
+   NEXT PUBLIC HOLIDAY
+   ========================================================== */
+
+.holiday-card {
+  margin-top: 14px;
+
+  padding: 20px;
+
+  background: #fff7ed;
+
+  border-radius: 24px;
+}
+
+.holiday-card small {
+  color: #ea580c;
+
+  font-weight: 800;
+}
+
+.holiday-card h2 {
+  margin: 4px 0;
+
+  color: #0f172a;
+}
+
+.holiday-card p {
+  margin: 0;
+
+  color: #475569;
+}
+
+.countdown {
+  margin-top: 14px;
+
+  padding: 9px 12px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  background: white;
+
+  color: #c2410c;
+
+  border-radius: 12px;
+
+  font-weight: 800;
+}
+
+/* ==========================================================
+   CALENDAR HEADER
+   ========================================================== */
+
+.week-header {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, 1fr);
+
+  gap: 4px;
+
+  margin-bottom: 7px;
+
+  text-align: center;
+}
+
+.week-header div {
+  color: #64748b;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+/* ==========================================================
+   CALENDAR GRID
+   ========================================================== */
+
+.calendar-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(7, 1fr);
+
+  gap: 4px;
+}
+
+.calendar-day {
+  position: relative;
+
+  aspect-ratio: 1;
+
+  border: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: #f1f5f9;
+
+  color: #0f172a;
+
+  border-radius: 12px;
+
+  font-weight: 700;
+}
+
+.calendar-day.selected {
+  color: white;
+
+  background: #0f172a;
+}
+
+.calendar-day.holiday:not(.selected) {
+  color: #c2410c;
+
+  background: #fff7ed;
+}
+
+.day-number {
+  color: inherit;
+}
+
+/* ==========================================================
+   CALENDAR LEAVE DOTS
+   ========================================================== */
+
+.leave-dots {
+  position: absolute;
+
+  left: 50%;
+  bottom: 5px;
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 2px;
+}
+
+.leave-dot {
+  width: 6px;
+  height: 6px;
+
+  display: block;
+
+  border-radius: 50%;
+}
+
+.leave-dot.group-1 {
+  background: #3b82f6;
+}
+
+.leave-dot.group-2 {
+  background: #a855f7;
+}
+
+.leave-dot.group-0 {
+  background: #f59e0b;
+}
+
+/* ==========================================================
+   SELECTED-DATE COVERAGE
+   ========================================================== */
+
+.group-grid.compact {
+  margin: 14px 0;
+}
+
+.selected-group {
+  padding: 12px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  border-radius: 14px;
+
+  color: #000000;
+}
+
+.selected-group.group-1 {
+  background: #eff6ff;
+}
+
+.selected-group.group-2 {
+  background: #faf5ff;
+}
+
+.selected-group strong,
+.selected-group span {
+  color: #000000;
+}
+
+/* ==========================================================
+   INPUTS
+   ========================================================== */
+
+.field-label {
+  margin: 12px 0 5px;
+
+  display: block;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+.input {
+  width: 100%;
+
+  border: 0;
+
+  padding: 12px;
+
+  background: #f1f5f9;
+
+  color: #000000;
+
+  border-radius: 12px;
+
+  outline: none;
+}
+
+.input option {
+  color: #000000;
+
+  background: white;
+}
+
+.black-text {
+  color: #000000 !important;
+
+  background: white;
+}
+
+.two-columns {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-top: 12px;
+}
+
+/* ==========================================================
+   BOTTOM NAVIGATION
+   ========================================================== */
+
+.bottom-nav {
+  position: fixed;
+
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: 10;
+
+  max-width: 430px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  background: white;
+
+  border-top:
+    1px solid #e2e8f0;
+}
+
+.bottom-nav button {
+  border: 0;
+
+  padding: 10px 2px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 3px;
+
+  background: white;
+
+  color: #475569;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+/* ==========================================================
+   MODAL
+   ========================================================== */
+
+.modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 30;
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: center;
+
+  background:
+    rgba(2, 6, 23, 0.55);
+}
+
+.bottom-sheet {
+  width: 100%;
+  max-width: 430px;
+
+  padding: 24px;
+
+  background: white;
+
+  border-radius:
+    28px
+    28px
+    0
+    0;
+}
+
+.modal-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+}
+
+.modal-heading small {
+  color: #2563eb;
+
+  font-size: 11px;
+
+  font-weight: 800;
+}
+
+.close-button {
+  width: 38px;
+  height: 38px;
+
+  border: 0;
+
+  display: grid;
+
+  place-items: center;
+
+  background: #f1f5f9;
+
+  border-radius: 50%;
+}
+
+.error-message {
+  margin: 12px 0;
+
+  padding: 12px;
+
+  color: #be123c;
+
+  background: #fff1f2;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+}
+
+/* ==========================================================
+   DELETE CONFIRMATION
+   ========================================================== */
+
+.delete-icon {
+  width: 48px;
+  height: 48px;
+
+  margin-bottom: 14px;
+
+  display: grid;
+
+  place-items: center;
+
+  color: #e11d48;
+
+  background: #ffe4e6;
+
+  border-radius: 15px;
+}
+
+.confirmation-copy {
+  color: #475569;
+
+  line-height: 1.5;
+}
+
+/* ==========================================================
+   LARGER SCREENS
+   ========================================================== */
+
+@media (min-width: 700px) {
+  .app-shell {
+    max-width: 760px;
+  }
+
+  .bottom-nav {
+    max-width: 760px;
+  }
+
+  .bottom-sheet {
+    max-width: 520px;
+
+    margin-bottom: 30px;
+
+    border-radius: 28px;
+  }
+
+  .modal-backdrop {
+    align-items: center;
+  }
+}
