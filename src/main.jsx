@@ -60,53 +60,33 @@ const initialLeave = [
 
 const holidays = {
   // 2026
-
   "2026-01-01": "New Year's Day",
-
   "2026-02-17": "Chinese New Year",
   "2026-02-18": "Chinese New Year",
-
   "2026-03-21": "Hari Raya Puasa",
-
   "2026-04-03": "Good Friday",
-
   "2026-05-01": "Labour Day",
-
   "2026-05-27": "Hari Raya Haji",
-
   "2026-05-31": "Vesak Day",
   "2026-06-01": "Vesak Day (Observed)",
-
   "2026-08-09": "National Day",
   "2026-08-10": "National Day (Observed)",
-
   "2026-11-08": "Deepavali",
   "2026-11-09": "Deepavali (Observed)",
-
   "2026-12-25": "Christmas Day",
 
   // 2027
-
   "2027-01-01": "New Year's Day",
-
   "2027-02-06": "Chinese New Year",
   "2027-02-07": "Chinese New Year",
   "2027-02-08": "Chinese New Year (Observed)",
-
   "2027-03-10": "Hari Raya Puasa",
-
   "2027-03-26": "Good Friday",
-
   "2027-05-01": "Labour Day",
-
   "2027-05-17": "Hari Raya Haji",
-
   "2027-05-20": "Vesak Day",
-
   "2027-08-09": "National Day",
-
   "2027-10-28": "Deepavali",
-
   "2027-12-25": "Christmas Day"
 };
 
@@ -147,21 +127,14 @@ function AppButton({
   );
 }
 
-export default function App() {
+function App() {
   const [tab, setTab] = useState("home");
-
   const [month, setMonth] = useState(new Date(2026, 8, 1));
-
   const [selectedDate, setSelectedDate] = useState(today);
-
   const [leaveRecords, setLeaveRecords] = useState(initialLeave);
-
   const [currentPerson, setCurrentPerson] = useState("Ariel");
-
   const [addLeaveOpen, setAddLeaveOpen] = useState(false);
-
   const [deleteTarget, setDeleteTarget] = useState(null);
-
   const [message, setMessage] = useState("");
 
   const [form, setForm] = useState({
@@ -171,17 +144,19 @@ export default function App() {
     end: today
   });
 
-  const peopleOnLeave = (date) =>
-    leaveRecords.filter(
+  function peopleOnLeave(date) {
+    return leaveRecords.filter(
       (record) => record.start <= date && record.end >= date
     );
+  }
 
-  const groupLeaveCount = (date, group) =>
-    new Set(
-      peopleOnLeave(date)
-        .filter((record) => getGroup(record.name) === group)
-        .map((record) => record.name)
-    ).size;
+  function groupLeaveCount(date, group) {
+    const names = peopleOnLeave(date)
+      .filter((record) => getGroup(record.name) === group)
+      .map((record) => record.name);
+
+    return new Set(names).size;
+  }
 
   const year = month.getFullYear();
   const monthNumber = month.getMonth();
@@ -199,13 +174,13 @@ export default function App() {
     ...Array(firstDayOffset).fill(null),
     ...Array.from(
       { length: daysInMonth },
-      (_, i) => new Date(year, monthNumber, i + 1)
+      (_, index) => new Date(year, monthNumber, index + 1)
     )
   ];
 
   const nextHoliday = Object.entries(holidays)
     .filter(([date]) => date >= today)
-    .sort(([a], [b]) => a.localeCompare(b))[0];
+    .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))[0];
 
   const daysToNextHoliday = nextHoliday
     ? Math.ceil(
@@ -215,13 +190,11 @@ export default function App() {
       )
     : null;
 
-  const myLeave = useMemo(
-    () =>
-      leaveRecords
-        .filter((record) => record.name === currentPerson)
-        .sort((a, b) => a.start.localeCompare(b.start)),
-    [leaveRecords, currentPerson]
-  );
+  const myLeave = useMemo(() => {
+    return leaveRecords
+      .filter((record) => record.name === currentPerson)
+      .sort((a, b) => a.start.localeCompare(b.start));
+  }, [leaveRecords, currentPerson]);
 
   function openAddLeave(date = selectedDate) {
     setForm({
@@ -246,13 +219,13 @@ export default function App() {
     const group = getGroup(form.name);
 
     if (group !== 0) {
-      let date = new Date(`${form.start}T00:00:00`);
+      let checkDate = new Date(`${form.start}T00:00:00`);
       const endDate = new Date(`${form.end}T00:00:00`);
 
-      while (date <= endDate) {
-        const dateString = formatDate(date);
+      while (checkDate <= endDate) {
+        const dateString = formatDate(checkDate);
 
-        const others = new Set(
+        const otherPeopleAway = new Set(
           peopleOnLeave(dateString)
             .filter(
               (record) =>
@@ -262,7 +235,7 @@ export default function App() {
             .map((record) => record.name)
         ).size;
 
-        if (others >= 2) {
+        if (otherPeopleAway >= 2) {
           setMessage(
             `Group ${group} is FULL on ${prettyDate(
               dateString
@@ -271,12 +244,12 @@ export default function App() {
           return;
         }
 
-        date.setDate(date.getDate() + 1);
+        checkDate.setDate(checkDate.getDate() + 1);
       }
     }
 
-    setLeaveRecords((records) => [
-      ...records,
+    setLeaveRecords((current) => [
+      ...current,
       {
         id: Date.now(),
         name: form.name,
@@ -293,8 +266,8 @@ export default function App() {
   function confirmRemoveLeave() {
     if (!deleteTarget) return;
 
-    setLeaveRecords((records) =>
-      records.filter((record) => record.id !== deleteTarget.id)
+    setLeaveRecords((current) =>
+      current.filter((record) => record.id !== deleteTarget.id)
     );
 
     setDeleteTarget(null);
@@ -314,12 +287,8 @@ export default function App() {
 
         <div className="leave-row-details">
           <strong>{record.name}</strong>
-
           <small>{record.type}</small>
-
-          <small className="remove-hint">
-            Tap to remove
-          </small>
+          <small className="remove-hint">Tap to remove</small>
         </div>
 
         <div className="leave-dates">
@@ -344,7 +313,6 @@ export default function App() {
         <div className="page-heading">
           <div>
             <small className="eyebrow">TODAY</small>
-
             <h2>21 September</h2>
           </div>
 
@@ -358,6 +326,10 @@ export default function App() {
           {[1, 2].map((group) => {
             const away = groupLeaveCount(today, group);
             const full = away >= 2;
+
+            const members = people.filter(
+              (person) => person.group === group
+            );
 
             return (
               <section
@@ -377,20 +349,18 @@ export default function App() {
                 </small>
 
                 <div className="member-list">
-                  {people
-                    .filter((person) => person.group === group)
-                    .map((person) => (
-                      <div
-                        className="member"
-                        key={person.name}
-                      >
-                        <span
-                          className={`member-dot group-${group}`}
-                        />
+                  {members.map((member) => (
+                    <div
+                      className="member"
+                      key={member.name}
+                    >
+                      <span
+                        className={`member-dot group-${group}`}
+                      />
 
-                        {person.name}
-                      </div>
-                    ))}
+                      {member.name}
+                    </div>
+                  ))}
                 </div>
               </section>
             );
@@ -419,9 +389,7 @@ export default function App() {
 
         {nextHoliday && (
           <section className="holiday-card">
-            <small>
-              NEXT PUBLIC HOLIDAY
-            </small>
+            <small>NEXT PUBLIC HOLIDAY</small>
 
             <h2>{nextHoliday[1]}</h2>
 
@@ -444,9 +412,7 @@ export default function App() {
           <AppButton
             secondary
             onClick={() =>
-              setMonth(
-                new Date(year, monthNumber - 1, 1)
-              )
+              setMonth(new Date(year, monthNumber - 1, 1))
             }
           >
             <ChevronLeft />
@@ -462,9 +428,7 @@ export default function App() {
           <AppButton
             secondary
             onClick={() =>
-              setMonth(
-                new Date(year, monthNumber + 1, 1)
-              )
+              setMonth(new Date(year, monthNumber + 1, 1))
             }
           >
             <ChevronRight />
@@ -473,39 +437,23 @@ export default function App() {
 
         <section className="calendar-card">
           <div className="week-header">
-            {[
-              "M",
-              "T",
-              "W",
-              "T",
-              "F",
-              "S",
-              "S"
-            ].map((day, index) => (
-              <div key={index}>
-                {day}
-              </div>
-            ))}
+            {["M", "T", "W", "T", "F", "S", "S"].map(
+              (day, index) => (
+                <div key={index}>{day}</div>
+              )
+            )}
           </div>
 
           <div className="calendar-grid">
             {calendarCells.map((date, index) => {
               if (!date) {
-                return (
-                  <div key={`blank-${index}`} />
-                );
+                return <div key={`blank-${index}`} />;
               }
 
               const dateString = formatDate(date);
-
-              const leave =
-                peopleOnLeave(dateString);
-
-              const selected =
-                selectedDate === dateString;
-
-              const holiday =
-                holidays[dateString];
+              const leave = peopleOnLeave(dateString);
+              const selected = selectedDate === dateString;
+              const holiday = holidays[dateString];
 
               return (
                 <button
@@ -515,9 +463,7 @@ export default function App() {
                     selected ? "selected" : "",
                     holiday ? "holiday" : ""
                   ].join(" ")}
-                  onClick={() =>
-                    setSelectedDate(dateString)
-                  }
+                  onClick={() => setSelectedDate(dateString)}
                 >
                   <span className="day-number">
                     {date.getDate()}
@@ -557,9 +503,312 @@ export default function App() {
             </div>
 
             <AppButton
-              onClick={() =>
-                openAddLeave(selectedDate)
-              }
+              onClick={() => openAddLeave(selectedDate)}
             >
               <Plus size={15} />
-        
+              Leave
+            </AppButton>
+          </div>
+
+          <div className="group-grid compact">
+            {[1, 2].map((group) => {
+              const away =
+                groupLeaveCount(selectedDate, group);
+
+              const full = away >= 2;
+
+              return (
+                <div
+                  key={group}
+                  className={`selected-group group-${group}`}
+                >
+                  <strong>GROUP {group}</strong>
+
+                  <span>
+                    {full ? "FULL" : "AVAILABLE"} · {away}/2
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {peopleOnLeave(selectedDate).length ? (
+            peopleOnLeave(selectedDate).map((record) => (
+              <LeaveRow
+                key={record.id}
+                record={record}
+              />
+            ))
+          ) : (
+            <p className="muted">
+              Nobody is on leave.
+            </p>
+          )}
+        </section>
+      </>
+    );
+  }
+
+  function MyLeaveScreen() {
+    return (
+      <>
+        <div>
+          <small className="eyebrow">PROFILE</small>
+          <h2>My Leave</h2>
+        </div>
+
+        <section className="card">
+          <label className="field-label">
+            Preview as
+          </label>
+
+          <select
+            className="input black-text"
+            value={currentPerson}
+            onChange={(event) =>
+              setCurrentPerson(event.target.value)
+            }
+          >
+            {people.map((person) => (
+              <option
+                key={person.name}
+                value={person.name}
+              >
+                {person.name}
+              </option>
+            ))}
+          </select>
+        </section>
+
+        <section className="card">
+          <h3>Upcoming leave</h3>
+
+          {myLeave.length ? (
+            myLeave.map((record) => (
+              <LeaveRow
+                key={record.id}
+                record={record}
+              />
+            ))
+          ) : (
+            <p className="muted">
+              No leave added yet.
+            </p>
+          )}
+        </section>
+      </>
+    );
+  }
+
+  return (
+    <main>
+      <div className="app-shell">
+        <header className="main-header">
+          <small>TEAM LEAVE</small>
+
+          <h1>Leave Planner</h1>
+
+          <p>
+            Shared leave calendar and cover availability.
+          </p>
+        </header>
+
+        {tab === "home" && <HomeScreen />}
+
+        {tab === "calendar" && <CalendarScreen />}
+
+        {tab === "me" && <MyLeaveScreen />}
+      </div>
+
+      <nav className="bottom-nav">
+        <button onClick={() => setTab("home")}>
+          <Home size={20} />
+          Home
+        </button>
+
+        <button onClick={() => setTab("calendar")}>
+          <CalendarDays size={20} />
+          Calendar
+        </button>
+
+        <button onClick={() => openAddLeave(selectedDate)}>
+          <Plus size={20} />
+          Add Leave
+        </button>
+
+        <button onClick={() => setTab("me")}>
+          <UserRound size={20} />
+          My Leave
+        </button>
+      </nav>
+
+      {addLeaveOpen && (
+        <div className="modal-backdrop">
+          <div className="bottom-sheet">
+            <div className="modal-heading">
+              <div>
+                <small>NEW LEAVE</small>
+                <h2>Add leave</h2>
+              </div>
+
+              <button
+                className="close-button"
+                onClick={() => setAddLeaveOpen(false)}
+              >
+                <X />
+              </button>
+            </div>
+
+            <label className="field-label">
+              Team member
+            </label>
+
+            <select
+              className="input"
+              value={form.name}
+              onChange={(event) =>
+                setForm({
+                  ...form,
+                  name: event.target.value
+                })
+              }
+            >
+              {people.map((person) => (
+                <option
+                  key={person.name}
+                  value={person.name}
+                >
+                  {person.name}
+                </option>
+              ))}
+            </select>
+
+            <label className="field-label">
+              Leave type
+            </label>
+
+            <select
+              className="input"
+              value={form.type}
+              onChange={(event) =>
+                setForm({
+                  ...form,
+                  type: event.target.value
+                })
+              }
+            >
+              <option>Annual Leave</option>
+              <option>Medical Leave</option>
+              <option>Childcare Leave</option>
+              <option>Other Leave</option>
+            </select>
+
+            <div className="two-columns">
+              <div>
+                <label className="field-label">
+                  Start date
+                </label>
+
+                <input
+                  className="input"
+                  type="date"
+                  value={form.start}
+                  onChange={(event) =>
+                    setForm({
+                      ...form,
+                      start: event.target.value
+                    })
+                  }
+                />
+              </div>
+
+              <div>
+                <label className="field-label">
+                  End date
+                </label>
+
+                <input
+                  className="input"
+                  type="date"
+                  value={form.end}
+                  onChange={(event) =>
+                    setForm({
+                      ...form,
+                      end: event.target.value
+                    })
+                  }
+                />
+              </div>
+            </div>
+
+            {message && (
+              <div className="error-message">
+                {message}
+              </div>
+            )}
+
+            <AppButton onClick={submitLeave}>
+              Save leave
+            </AppButton>
+          </div>
+        </div>
+      )}
+
+      {deleteTarget && (
+        <div className="modal-backdrop">
+          <div className="bottom-sheet">
+            <div className="delete-icon">
+              <X size={24} />
+            </div>
+
+            <h2>Remove leave?</h2>
+
+            <p className="confirmation-copy">
+              You are about to remove{" "}
+              <strong>{deleteTarget.name}</strong>
+              's{" "}
+              {deleteTarget.type.toLowerCase()} from{" "}
+              <strong>
+                {prettyDate(deleteTarget.start)}
+              </strong>
+
+              {deleteTarget.end !== deleteTarget.start && (
+                <>
+                  {" "}
+                  to{" "}
+                  <strong>
+                    {prettyDate(deleteTarget.end)}
+                  </strong>
+                </>
+              )}
+              .
+            </p>
+
+            <p className="confirmation-copy">
+              The calendar and group availability will update
+              immediately.
+            </p>
+
+            <div className="two-columns">
+              <AppButton
+                secondary
+                onClick={() => setDeleteTarget(null)}
+              >
+                Keep leave
+              </AppButton>
+
+              <AppButton
+                danger
+                onClick={confirmRemoveLeave}
+              >
+                Yes, remove
+              </AppButton>
+            </div>
+          </div>
+        </div>
+      )}
+    </main>
+  );
+}
+
+createRoot(document.getElementById("root")).render(<App />);
