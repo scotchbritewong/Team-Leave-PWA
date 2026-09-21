@@ -1,10 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
+import { nitro } from "nitro/vite";
 
 export default defineConfig({
   plugins: [
     react(),
+
+    nitro(),
 
     VitePWA({
       registerType: "autoUpdate",
