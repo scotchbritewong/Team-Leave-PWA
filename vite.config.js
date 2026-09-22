@@ -12,6 +12,8 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
 
+      selfDestroying: true,
+
       manifest: {
         name: "Team Leave Planner",
         short_name: "Leave Planner",
@@ -23,7 +25,6 @@ export default defineConfig({
         background_color: "#f8fafc",
 
         display: "standalone",
-
         start_url: "/",
 
         icons: [
