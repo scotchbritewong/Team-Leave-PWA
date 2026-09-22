@@ -5,9 +5,7 @@ import { nitro } from "nitro/vite";
 
 export default defineConfig({
   plugins: [
-    nitro({
-      serverDir: "./server"
-    }),
+    nitro(),
 
     react(),
 
@@ -17,11 +15,15 @@ export default defineConfig({
       manifest: {
         name: "Team Leave Planner",
         short_name: "Leave Planner",
+
         description:
           "Shared team leave calendar and cover availability.",
+
         theme_color: "#0f172a",
         background_color: "#f8fafc",
+
         display: "standalone",
+
         start_url: "/",
 
         icons: [
