@@ -7,16 +7,14 @@ export default defineHandler(async () => {
   const records = await sql`
     SELECT
       id,
-      person_id,
-      leave_type,
-      start_date::text,
-      end_date::text,
-      comment,
-      half_day,
-      created_at
-    FROM leave_records
-    ORDER BY start_date, id
+      name,
+      team_group
+    FROM team_members
+    ORDER BY
+      team_group,
+      id
   `;
 
   return records;
 });
+``
