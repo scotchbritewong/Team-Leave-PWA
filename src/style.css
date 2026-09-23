@@ -1104,3 +1104,68 @@ h3 {
     align-items: center;
   }
 }
+
+/* =========================================================
+   TODAY HIGHLIGHT
+   ========================================================= */
+.calendar-day.today .day-number {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: #2563eb;
+  border-radius: 50%;
+  font-weight: 800;
+}
+.calendar-day.today.selected .day-number {
+  color: #0f172a;
+  background: #ffffff;
+}
+
+/* =========================================================
+   HALF-DAY LEAVE DOT
+   ========================================================= */
+.leave-dot.half-day {
+  width: 3px;
+  border-radius: 6px 0 0 6px;
+}
+
+/* =========================================================
+   LEAVE DURATION
+   ========================================================= */
+.leave-duration-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.duration-button {
+  border: 1px solid #d1d5db;
+  padding: 11px 12px;
+  color: #475569;
+  background: #f8fafc;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.duration-button.active {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+/* =========================================================
+   LEAVE COMMENTS
+   ========================================================= */
+.leave-comment-input {
+  min-height: 76px;
+  margin-bottom: 18px;
+  resize: vertical;
+  font: inherit;
+}
+.input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
