@@ -207,7 +207,9 @@ function App() {
       personId: "",
       type: "Annual Leave",
       start: today,
-      end: today
+      end: today,
+      comment: "",
+      halfDay: false
     });
 
   const [message, setMessage] =
@@ -353,6 +355,12 @@ function App() {
 
           end:
             record.end_date,
+
+          comment:
+            record.comment || "",
+
+          halfDay:
+            record.half_day === true,
 
           createdAt:
             record.created_at
@@ -590,7 +598,13 @@ function App() {
         date,
 
       end:
-        date
+        date,
+
+      comment:
+        "",
+
+      halfDay:
+        false
     });
 
     setMessage("");
@@ -628,6 +642,15 @@ function App() {
       return;
     }
 
+    if (
+      form.halfDay &&
+      form.start !== form.end
+    ) {
+      setMessage(
+        "Half-day leave can only be added for one date."
+      );
+      return;
+    }
     setSavingLeave(true);
 
     try {
@@ -657,7 +680,11 @@ function App() {
                   form.start,
 
                 endDate:
-                  form.end
+                  form.end,
+                comment:
+                  form.comment.trim(),
+                halfDay:
+                  form.halfDay
               })
           }
         );
@@ -871,6 +898,12 @@ function App() {
 
           <small>
             {record.type}
+            {record.halfDay
+              ? " · ½ day"
+              : ""}
+            {record.comment
+              ? ` · ${record.comment}`
+              : ""}
           </small>
 
           <small className="remove-hint">
@@ -1178,6 +1211,9 @@ function App() {
                   selectedDate ===
                   dateString;
 
+                const isToday =
+                  today ===
+                  dateString;
                 const holiday =
                   holidays[
                     dateString
@@ -1194,6 +1230,10 @@ function App() {
 
                       selected
                         ? "selected"
+                        : "",
+
+                      isToday
+                        ? "today"
                         : "",
 
                       holiday
@@ -1221,9 +1261,15 @@ function App() {
                             key={
                               record.id
                             }
-                            className={`leave-dot group-${getPersonGroup(
-                              record.personId
-                            )}`}
+                            className={[
+                              "leave-dot",
+                              `group-${getPersonGroup(
+                                record.personId
+                              )}`,
+                              record.halfDay
+                                ? "half-day"
+                                : ""
+                            ].join(" ")}
                           />
                         )
                       )}
@@ -1956,7 +2002,11 @@ function App() {
                       start:
                         event
                           .target
-                          .value
+                          .value,
+                      end:
+                        form.halfDay
+                          ? event.target.value
+                          : form.end
                     })
                   }
                 />
@@ -1970,6 +2020,7 @@ function App() {
                 <input
                   className="input"
                   type="date"
+                  disabled={form.halfDay}
                   value={
                     form.end
                   }
@@ -1988,6 +2039,63 @@ function App() {
                 />
               </div>
             </div>
+
+            <label className="field-label">
+              Leave duration
+            </label>
+
+            <div className="leave-duration-options">
+              <button
+                type="button"
+                className={[
+                  "duration-button",
+                  !form.halfDay ? "active" : ""
+                ].join(" ")}
+                onClick={() =>
+                  setForm({
+                    ...form,
+                    halfDay: false
+                  })
+                }
+              >
+                Full day
+              </button>
+
+              <button
+                type="button"
+                className={[
+                  "duration-button",
+                  form.halfDay ? "active" : ""
+                ].join(" ")}
+                onClick={() =>
+                  setForm({
+                    ...form,
+                    halfDay: true,
+                    end: form.start
+                  })
+                }
+              >
+                ½ day
+              </button>
+            </div>
+
+            <label className="field-label">
+              Comments
+            </label>
+
+            <textarea
+              className="input leave-comment-input"
+              rows="3"
+              maxLength="200"
+              placeholder="Optional comment"
+              value={form.comment}
+              onChange={(event) =>
+                setForm({
+                  ...form,
+                  comment: event.target.value
+                })
+              }
+            />
 
             {message && (
               <div className="error-message">
