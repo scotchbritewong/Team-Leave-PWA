@@ -11,6 +11,8 @@ export default defineHandler(async () => {
       leave_type,
       start_date::text,
       end_date::text,
+      comment,
+      half_day,
       created_at
     FROM leave_records
     ORDER BY start_date, id
@@ -18,4 +20,3 @@ export default defineHandler(async () => {
 
   return records;
 });
-``
