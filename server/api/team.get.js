@@ -4,14 +4,19 @@ import { neon } from "@neondatabase/serverless";
 export default defineHandler(async () => {
   const sql = neon(process.env.DATABASE_URL);
 
-  const people = await sql`
+  const records = await sql`
     SELECT
       id,
-      name,
-      team_group
-    FROM team_members
-    ORDER BY id
+      person_id,
+      leave_type,
+      start_date::text,
+      end_date::text,
+      comment,
+      half_day,
+      created_at
+    FROM leave_records
+    ORDER BY start_date, id
   `;
 
-  return people;
+  return records;
 });
