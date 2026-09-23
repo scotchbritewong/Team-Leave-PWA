@@ -11,6 +11,9 @@ export default defineHandler(async (event) => {
   const startDate = String(body.startDate || "");
   const endDate = String(body.endDate || "");
 
+  const comment = String(body.comment || "").trim();
+  const halfDay = body.halfDay === true;
+
   if (
     !personId ||
     !leaveType ||
@@ -26,6 +29,13 @@ export default defineHandler(async (event) => {
   if (endDate < startDate) {
     throw new HTTPError(
       "End date cannot be before start date.",
+      { status: 400 }
+    );
+  }
+
+  if (halfDay && startDate !== endDate) {
+    throw new HTTPError(
+      "Half-day leave can only be added for one date.",
       { status: 400 }
     );
   }
@@ -71,13 +81,17 @@ export default defineHandler(async (event) => {
       person_id,
       leave_type,
       start_date,
-      end_date
+      end_date,
+      comment,
+      half_day
     )
     VALUES (
       ${personId},
       ${leaveType},
       ${startDate},
-      ${endDate}
+      ${endDate},
+      ${comment},
+      ${halfDay}
     )
     RETURNING
       id,
@@ -85,6 +99,8 @@ export default defineHandler(async (event) => {
       leave_type,
       start_date::text,
       end_date::text,
+      comment,
+      half_day,
       created_at
   `;
 
